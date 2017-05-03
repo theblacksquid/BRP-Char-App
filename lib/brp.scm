@@ -9,7 +9,9 @@
         (+ (rand-int 1 sides) (dice (- num 1) sides modifier)))))
 
 (define profile-items
-  '("Name" "Age" "Race" "Gender" "Handedness" "Job" "Description"))
+  '("Name" "Age" "Race" "Gender" 
+    "Handedness" "Job" "Description"
+    "Biography"))
 
 (define stats
   '("STR" "SIZ" "CON" "INT" "DEX" "POW" "APP"))
