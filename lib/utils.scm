@@ -175,6 +175,27 @@
         (else 
           (loop (+ index 1) n))))))
 
+(define remove-special-chars
+  (lambda (str)
+    (list->string
+      (let loop ((ls (string->list str))
+                 (alphanumeric (string->list 
+                 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ")))
+       (cond 
+         ((null? ls) '())
+         ((in-list? alphanumeric (car ls)) 
+          (cons (car ls)
+                (loop (cdr ls) alphanumeric)))
+         (else 
+          (loop (cdr ls) alphanumeric)))))))
+
+(define sanitize-name
+  (lambda (name)
+    (let loop ((ls (string-split name " "))
+               )
+      (if (null? (cdr ls))
+          (car ls)
+          (string-append (car ls) "-" (loop (cdr ls)))))))
 
 
 
