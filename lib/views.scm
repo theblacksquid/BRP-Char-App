@@ -17,7 +17,7 @@
         style "padding: 0.35em 16px;text-align:left"
         ,(string-append stat-name ":  ")
         (button
-          id ,(sanitize-name (string-append stat-name "-btn"))
+          id ,(string-append stat-name "-btn")
           style "display: inline-block;float:right"
           class "w3-btn"
           "ROLL!")
@@ -26,7 +26,7 @@
           placeholder ,stat-name
           class "w3-grey"
           style "display: inline-block;float:right"
-          id ,(sanitize-name (string-append stat-name "-val"))
+          id ,(string-append stat-name "-val")
           disabled)))))
 
 (define make-derived-stat-box
@@ -92,17 +92,17 @@
     (element-new 
       `(div
         class "w3-container"
-        ;style "display:inline-block"
+        ;style "vertical-align:top"
         id ,(string-append skill-name "-div")
 	      (p
-		      class "w3-third"
-		      style "text-align:left"
+		      ;class "w3-third"
+		      style "text-align:left;display:inline-block;width:30%"
 		      ,(string-append skill-name ":   "))
         (input
 			    type "text"
 			    id ,(sanitize-name skill-name)
-			    class "w3-third w3-grey w3-center"
-			    style "display: inline-block;width:30%"
+			    class "w3-grey w3-center"
+			    style "width:30%;"
 			    value ,(if (pair? skill-base)
 			               (if (string? (cadr skill-base))
 			                   (string-append (car skill-base)
@@ -113,22 +113,20 @@
 			                                  (number->string (cadr skill-base))))
 			               skill-base)
 			    disabled)
-		(div
-			class "w3-third"
-			style "display: inline-block;"
-			;style "float: right;"
-			(button
-				class "w3-btn"
-				style "display: inline-block;"
-				id ,(string-append (sanitize-name skill-name) "-add")
-				"+")
-			(button
-				class "w3-btn"
-				style "display: inline-block;"
-				id ,(string-append (sanitize-name skill-name) "-subtract")
-				"-"
-				)
-		)
+        (div
+          style "display: inline-block;width:30%"
+          (button
+            class "w3-btn"
+            style "display: inline-block;"
+            id ,(string-append (sanitize-name skill-name) "-add")
+            "+")
+          (button
+            class "w3-btn"
+            style "display: inline-block;"
+            id ,(string-append (sanitize-name skill-name) "-subtract")
+            "-"
+            )
+        )
         ))))
 
 (define weapon-skill-box
@@ -176,6 +174,8 @@
 	        ,dmg-val)
         ))))
 
+(element-remove! ($ "#gear"))
+
 (render "#app"
         (element-new
           `(div
@@ -186,20 +186,21 @@
               (h1 "BRP Character Generator")
               (button
                 id "character-panel-btn"
-                class "w3-btn-bar"
+                class "w3-btn"
                 "Character Profile")
               (button
                 id "character-list-btn"
-                class "w3-btn-bar"
+                class "w3-btn"
                 "Character List")
               (button 
                 id "settings-panel-btn"
+                class "w3-btn"
                 "Settings"))
              (div
               id "character-panel"
               style "display:block"
               (div
-                style "display:inline-block;width:15%;vertical-align:top;"
+                style "display:inline-block;width:15%;vertical-align:top;margin-top:1%;"
                 (button
                   id "profile-btn"
                   class "w3-btn-block"
@@ -211,27 +212,29 @@
                   style "display:block"
                   "Skills Overview"))
               (div
-                style "display:inline-block;width:85%"
+                style "display:inline-block;width:85%;margin-top:1%"
+                class "w3-container"
                 id "profile-info"
                 (div
                   id "profile-panel"
                   style "display:inline-block;text-align:center;vertical-align:top")
+                (div 
+                  id "stats-panel"
+                  style "display:inline-block;"
+                  )
+                (div 
+                  id "derived-stats-panel"
+                  style "display:inline-block;"
+                  )
                 (div
                   id "stats-container" 
                   style "text-align:center;display:inline-block"
-                  (div 
-                   id "stats-panel"
-                   style "display:inline-block;"
-                   )
-                  (div 
-                   id "derived-stats-panel"
-                   style "display:inline-block;"
-                   )
                  )
               
                )
                (div
                   id "skills-overview"
+                  class "w3-container"
                   style "display:none"
                   (div 
                     id "skill-pt-panel")
@@ -242,7 +245,7 @@
                     id "weapon-skills-panel"
                     style "text-align:center;display:inline-block;vertical-align:top")
                )
-               )) 
+             )) 
            )
         'html)
 
@@ -257,8 +260,8 @@
 (render "#skill-pt-panel"
         (element-new
           '(div
-            class "w3-container w3-rest"
-            style "text-align:center;vertical-align:top"
+            class "w3-container"
+            style ";vertical-align:top;display:block"
             (p
               style "text-align:left;display:inline-block"
             "Total Skill Points:  ")
@@ -269,6 +272,23 @@
                 class "w3-center w3-grey"
                 value "000"
                 disabled)))
+        'append)
+
+(render "#skill-pt-panel"
+        (element-new
+          '(div
+            class "w3-container"
+            style "display:block"
+            (button
+              id "add-skill-btn"
+              class "w3-btn"
+              style "display:inline-block"
+              "Add Skill")
+            (button
+              id "reset-skills-btn"
+              class "w3-btn"
+              style "display:inline-block"
+              "Reset Skills")))
         'append)
 
 (let loop ((ls stats))

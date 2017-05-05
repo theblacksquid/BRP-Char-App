@@ -16,6 +16,22 @@
 (define stats
   '("STR" "SIZ" "CON" "INT" "DEX" "POW" "APP"))
 
+(define derived-stats
+  '("Health" "Magick" "Effort" "Dmg Bonus" "Stamina" 
+    "Idea" "Agility" "Luck" "Charisma"))
+
+(define derived-stats-pairs
+  '(("Effort" "STR")
+    ("Stamina" "CON")
+    ("Idea" "INT")
+    ("Agility" "DEX")
+    ("Luck" "POW")
+    ("Charisma" "APP")))
+
+(define weapon-skill-list
+  '(("Brawl" (25 "1d4+db"))
+    ("Grapple" (25 "1d4+db"))))
+
 (define roll-stat
   ; stat-name should be a string
   ; dice-vals is a list of three numbers, see 'dice'
@@ -31,18 +47,6 @@
           '()
           (cons (roll-stat (car ls) dice-vals)
                 (loop (cdr ls)))))))
-
-(define derived-stats
-  '("Health" "Magick" "Effort" "Dmg Bonus" "Stamina" 
-    "Idea" "Agility" "Luck" "Charisma"))
-
-(define derived-stats-pairs
-  '(("Effort" "STR")
-    ("Stamina" "CON")
-    ("Idea" "INT")
-    ("Agility" "DEX")
-    ("Luck" "POW")
-    ("Charisma" "APP")))
 
 (define calculate-dmg-bonus
   ; num is a number that is the sum of 

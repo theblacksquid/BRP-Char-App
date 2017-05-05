@@ -46,6 +46,47 @@
                 5))
           (loop (cdr ls) ht))))))
 
+(define update-skillpoints
+  (lambda ()
+    (-> ($ "#skillpoints") 'val
+      (let ((ht (get-stat-values)))
+        (+ (let loop ((ls stats)
+                      (prod 0))
+             (cond 
+                ((null? ls) prod)
+                ((eqv? (car ls) "INT") 
+                 (loop (cdr ls) prod))
+                (else
+                  (loop (cdr ls) 
+                        (+ (* (string->number (assoc-ref (car ls) ht))
+                              5) 
+                           prod)))))
+           (* (string->number (assoc-ref "INT" ht)) 10))))))
+
+(define update-skills
+  (lambda ()
+    (let loop ((ls skill-list)
+               (ht (get-stat-values)))
+      (cond
+        ((null? ls) '())
+        ((pair? (assoc-ref (car (car ls)) ls)) 
+         (begin
+           (console-log (car (car ls)))
+           (console-log (cadr (assoc-ref (car (car ls)) ls)))
+           (console-log (string-append "#" (sanitize-name (car (car ls)))))
+           (console-log "----")
+           (-> ($ (string-append "#" (sanitize-name (car (car ls))))) 'val 
+             (if (string? (cadr (assoc-ref (car (car ls)) ls)))
+                 (+ (string->number (assoc-ref (car (assoc-ref (car (car ls)) ls)) ht))
+                    (string->number (assoc-ref (cadr (assoc-ref (car (car ls)) ls)) ht)))
+                 (* (string->number (assoc-ref (car (assoc-ref (car (car ls)) ls)) ht)) 
+                    (cadr (assoc-ref (car (car ls)) ls))
+                    )))
+           (loop (cdr ls) ht)
+         ))
+        (else
+          (loop (cdr ls) ht))))))
+
 (define stat-roll-callback
   (lambda (stat-name)
     (begin
@@ -53,6 +94,8 @@
           'val 
           (dice 2 6 6))
       (update-derived)
+      (update-skillpoints)
+      (update-skills)
     )))
 
 (define randomize-callback
@@ -69,6 +112,8 @@
               (loop (cdr ls) ht)))
       )
       (update-derived)
+      (update-skillpoints)
+      (update-skills)
     )))
 
 (define skill-point-callback
@@ -102,10 +147,6 @@
                (stat-roll-callback (car ls)))))
         (loop (cdr ls))
       )))    
-
-(define update-skills
-  (lambda ()
-    '()))
     
 (define nav-btn-callback
   (lambda (to-show to-hide)
@@ -136,4 +177,9 @@
     (lambda ()
       (nav-btn-callback "skills-overview" "profile-info"))))    
     
-    
+   
+   
+   
+   
+   
+   

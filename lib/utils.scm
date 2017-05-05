@@ -191,13 +191,13 @@
 
 (define sanitize-name
   (lambda (name)
-    (let loop ((ls (string-split name " "))
+    (let loop ((ls (string-split (remove-special-chars name) " "))
                )
       (if (null? (cdr ls))
           (car ls)
           (string-append (car ls) "-" (loop (cdr ls)))))))
 
-
+(console-log (sanitize-name (remove-special-chars "STR")))
 
 
 
