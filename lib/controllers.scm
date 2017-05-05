@@ -71,6 +71,20 @@
       (update-derived)
     )))
 
+(define skill-point-callback
+  (lambda (skill-name mode)
+    (let ((name (string-append "#" (sanitize-name skill-name))))
+      (if (zero? (-> ($ "#skillpoints") 'val))
+          '()
+          (begin
+            (-> ($ name) 'val ((if (eqv? mode 'add) + -) 
+                               (string->number (-> ($ name) 'val))
+                               1))
+            (-> ($ "#skillpoints") 'val ((if (mode 'add) - +)
+                                         (-> ($ "#skillpoints") 'val)
+                                         1))
+          )))))
+
 (-> ($ "#randomize")
     'click
     (js-closure
@@ -88,6 +102,38 @@
                (stat-roll-callback (car ls)))))
         (loop (cdr ls))
       )))    
+
+(define update-skills
+  (lambda ()
+    '()))
     
+(define nav-btn-callback
+  (lambda (to-show to-hide)
+    (if (pair? to-hide)
+        (let loop ((ls to-hide))
+          (if (null? ls)
+              '()
+              (begin
+                (-> ($ (string-append "#" to-show)) 
+                    'css "display" "block")
+                (-> ($ (string-append "#" (car ls))) 
+                    'css "display" "none")
+                (loop (cdr ls))
+              )))
+        (begin
+          (-> ($ (string-append "#" to-show)) 'css "display" "inline-block")
+          (-> ($ (string-append "#" to-hide)) 'css "display" "none")
+        ))))    
+
+(-> ($ "#profile-btn") 'click
+  (js-closure
+    (lambda ()
+      (nav-btn-callback "profile-info" "skills-overview"))))    
+    
+    
+(-> ($ "#skills-btn") 'click
+  (js-closure
+    (lambda ()
+      (nav-btn-callback "skills-overview" "profile-info"))))    
     
     

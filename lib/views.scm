@@ -14,7 +14,7 @@
     (element-new 
       `(div
         class "w3-container w3-row"
-        style "padding: 0.35em 16px;"
+        style "padding: 0.35em 16px;text-align:left"
         ,(string-append stat-name ":  ")
         (button
           id ,(sanitize-name (string-append stat-name "-btn"))
@@ -34,7 +34,7 @@
     (element-new
       `(div
         class "w3-container"
-        style "padding: 0.35em 16px;"
+        style "padding: 0.35em 16px;text-align:left"
         ,(string-append stat-name ":  ")
         (input
           type "text"
@@ -92,9 +92,11 @@
     (element-new 
       `(div
         class "w3-container"
+        ;style "display:inline-block"
         id ,(string-append skill-name "-div")
 	      (p
 		      class "w3-third"
+		      style "text-align:left"
 		      ,(string-append skill-name ":   "))
         (input
 			    type "text"
@@ -136,7 +138,7 @@
         class "w3-container"
         id ,(string-append skill-name "-div")
         (p 
-          style "width:25%;display:inline-block;text-align:center"
+          style "width:25%;display:inline-block;text-align:left"
           ,skill-name)
         (input
           id ,(sanitize-name skill-name) 
@@ -179,28 +181,69 @@
           `(div
             style "margin:auto;"
             (div
-              id "profile-panel"
-              style "display:block")
-            (div
-              id "stats-container" 
-              style "text-align:center;display:block"
-              (div 
-               id "stats-panel"
-               style "display:inline-block;"
+              id "main-navbar"
+              style "display:block"
+              (h1 "BRP Character Generator")
+              (button
+                id "character-panel-btn"
+                class "w3-btn-bar"
+                "Character Profile")
+              (button
+                id "character-list-btn"
+                class "w3-btn-bar"
+                "Character List")
+              (button 
+                id "settings-panel-btn"
+                "Settings"))
+             (div
+              id "character-panel"
+              style "display:block"
+              (div
+                style "display:inline-block;width:15%;vertical-align:top;"
+                (button
+                  id "profile-btn"
+                  class "w3-btn-block"
+                  style "display:block"
+                  "Profile Information")
+                (button
+                  id "skills-btn"
+                  class "w3-btn-block"
+                  style "display:block"
+                  "Skills Overview"))
+              (div
+                style "display:inline-block;width:85%"
+                id "profile-info"
+                (div
+                  id "profile-panel"
+                  style "display:inline-block;text-align:center;vertical-align:top")
+                (div
+                  id "stats-container" 
+                  style "text-align:center;display:inline-block"
+                  (div 
+                   id "stats-panel"
+                   style "display:inline-block;"
+                   )
+                  (div 
+                   id "derived-stats-panel"
+                   style "display:inline-block;"
+                   )
+                 )
+              
                )
-              (div 
-               id "derived-stats-panel"
-               style "display:inline-block;"
+               (div
+                  id "skills-overview"
+                  style "display:none"
+                  (div 
+                    id "skill-pt-panel")
+                  (div 
+                    id "skills-panel"
+                    style "text-align:center;display:inline-block;overflow:auto;height:500px")
+                  (div
+                    id "weapon-skills-panel"
+                    style "text-align:center;display:inline-block;vertical-align:top")
                )
-            )
-            (div 
-              id "skills-panel"
-              style "text-align:center")
-            (div
-              id "weapon-skills-panel"
-              style "text-align:center"
-              ))
-        )
+               )) 
+           )
         'html)
 
 (let loop ((ls profile-items))
@@ -211,17 +254,18 @@
 			(loop (cdr ls))
 		)))
 
-(render "#skills-panel"
+(render "#skill-pt-panel"
         (element-new
           '(div
             class "w3-container w3-rest"
-            style "text-align:center;"
+            style "text-align:center;vertical-align:top"
             (p
-              style "text-align:center;"
+              style "text-align:left;display:inline-block"
             "Total Skill Points:  ")
              (input 
                 type "text"
-                style "width:80%;margin:auto"
+                id "skillpoints"
+                style "width:30%;margin:auto;display:inline-block"
                 class "w3-center w3-grey"
                 value "000"
                 disabled)))
