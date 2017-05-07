@@ -103,5 +103,27 @@
                                5))
                       prod)))))))
 
+(define e-new element-new)
 
+(define format-info
+  (lambda (alist)
+    (element-new 
+      `(div 
+         class "charsheet"
+         (h1 
+          "BRP Character Sheet")
+         (div 
+          (h3 "Profile:")
+          ,(let loop ((ls profile-items))
+            (if (null? ls)
+                '()
+                (list `(p ,(car ls) 
+                          ,(assoc-ref (car ls) 
+                                      (assoc-ref "Profile" alist)))
+                      (loop (cdr ls))))))
+;         ()
+;         ()
+;         ()
+;         ()
+         ))))
 

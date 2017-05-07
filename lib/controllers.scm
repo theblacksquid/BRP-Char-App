@@ -5,7 +5,7 @@
       (if (null? ls)
           '()
           (cons (list (car ls)
-                      (-> ($ (string-append "#" (car ls) "-val")) 
+                      (-> ($ (string-append "#" (car ls))) 
                           'val))
                 (loop (cdr ls)))))))
 
@@ -90,7 +90,7 @@
 (define stat-roll-callback
   (lambda (stat-name)
     (begin
-      (-> ($ (string-append "#" stat-name "-val")) 
+      (-> ($ (string-append "#" stat-name)) 
           'val 
           (dice 2 6 6))
       (update-derived)
@@ -106,7 +106,7 @@
         (if (null? ls)
             '()
             (begin
-              (-> ($ (string-append "#" (car ls) "-val")) 
+              (-> ($ (string-append "#" (car ls))) 
                   'val 
                   (assoc-ref (car ls) ht))
               (loop (cdr ls) ht)))
@@ -119,14 +119,14 @@
 (define skill-point-callback
   (lambda (skill-name mode)
     (let ((name (string-append "#" (sanitize-name skill-name))))
-      (if (zero? (-> ($ "#skillpoints") 'val))
+      (if (zero? (string->number (-> ($ "#skillpoints") 'val)))
           '()
           (begin
             (-> ($ name) 'val ((if (eqv? mode 'add) + -) 
                                (string->number (-> ($ name) 'val))
                                1))
-            (-> ($ "#skillpoints") 'val ((if (mode 'add) - +)
-                                         (-> ($ "#skillpoints") 'val)
+            (-> ($ "#skillpoints") 'val ((if (eqv? mode 'add) - +)
+                                         (string->number (-> ($ "#skillpoints") 'val))
                                          1))
           )))))
 
@@ -156,7 +156,7 @@
               '()
               (begin
                 (-> ($ (string-append "#" to-show)) 
-                    'css "display" "block")
+                    'css "display" "inline-block")
                 (-> ($ (string-append "#" (car ls))) 
                     'css "display" "none")
                 (loop (cdr ls))
@@ -169,17 +169,89 @@
 (-> ($ "#profile-btn") 'click
   (js-closure
     (lambda ()
-      (nav-btn-callback "profile-info" "skills-overview"))))    
+      (nav-btn-callback "profile-info" '("skills-overview" "stats-overview")))))    
     
     
 (-> ($ "#skills-btn") 'click
   (js-closure
     (lambda ()
-      (nav-btn-callback "skills-overview" "profile-info"))))    
+      (nav-btn-callback "skills-overview" '("profile-info" "stats-overview")))))    
     
+(-> ($ "#stats-btn") 'click
+  (js-closure
+    (lambda ()
+      (nav-btn-callback "stats-overview" '("profile-info" "skills-overview")))))
    
+(define get-profile-info
+  (lambda ()
+    (let loop ((ls (flatten 
+                     (list (js-array->list ($ "#profile-info input"))
+                           (js-array->list ($ "#profile-info select"))
+                           (js-array->list ($ "#profile-info textarea"))))))
+      (if (null? ls)
+          '()
+          (begin
+            ;(console-log (car ls))
+            (cons (list (js-ref (car ls) "id") (js-ref (car ls) "value"))
+                  (loop (cdr ls))))))))
+
+(define get-stats-info
+  (lambda ()
+    (let loop ((ls stats))
+      (if (null? ls)
+          '()
+          (cons (list (car ls) 
+                      (-> ($ (string-append "#" (car ls))) 'val))
+                (loop (cdr ls)))))))
+
+(define get-derived-stats-info
+  (lambda ()
+    (let loop ((ls (js-array->list ($ "#derived-stats-panel input"))))
+      (if (null? ls)
+          '()
+          (cons (list (js-ref (car ls) "id") (js-ref (car ls) "value"))
+                (loop (cdr ls)))))))
+
+(define get-skills-info
+  (lambda ()
+    (let loop ((ls (js-array->list ($ "#skills-panel input"))))
+      (if (null? ls)
+          '()
+          (cons (list (js-ref (car ls) "id")
+                      (js-ref (car ls) "value"))
+                (loop (cdr ls)))))))
+
+(define get-weapon-skills-info
+  (lambda ()
+    (let loop ((ls (js-array->list ($ "#weapon-skills-panel input"))))
+      (if (null? ls)
+          '()
+          (cons (list (js-ref (car ls) "id")
+                      (js-ref (car ls) "value"))
+                (loop (cdr ls)))))))
+
+;(console-log (flatten (list (js-array->list ($ "#profile-info input"))
+;                           (js-array->list ($ "#profile-info select"))
+;                           (js-array->list ($ "#profile-info textarea")))))
+
+(define collate-info
+  (lambda ()
+    `(("Profile" ,(get-profile-info)) 
+      ("Stats" ,(get-stats-info)) 
+      ("Derived Stats" ,(get-derived-stats-info))
+      ("Skills" ,(get-skills-info)
+      ("Weapon Skills" ,(get-weapon-skills-info))))))
+
+
+
+(-> ($ "#save-character") 'click
+  (js-closure 
+    (lambda ()
+      (console-log (format-info (collate-info))))))
+
+
+
    
-   
-   
+
    
    

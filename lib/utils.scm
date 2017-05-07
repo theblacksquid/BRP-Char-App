@@ -197,8 +197,17 @@
           (car ls)
           (string-append (car ls) "-" (loop (cdr ls)))))))
 
-(console-log (sanitize-name (remove-special-chars "STR")))
-
+(define flatten
+  (lambda (ls)
+    (let loop ((lst ls))
+      (cond
+        ((null? lst) '())
+        ((pair? (car lst)) 
+         (append (loop (car lst))
+                 (loop (cdr lst))))
+        (else
+          (cons (car lst)
+                (loop (cdr lst))))))))
 
 
 

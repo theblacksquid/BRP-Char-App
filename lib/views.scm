@@ -14,11 +14,11 @@
     (element-new 
       `(div
         class "w3-container w3-row"
-        style "padding: 0.35em 16px;text-align:left"
+        style "padding: 0.35em 16px;text-align:left;"
         ,(string-append stat-name ":  ")
         (button
           id ,(string-append stat-name "-btn")
-          style "display: inline-block;float:right"
+          style "display:inline-block;float:right"
           class "w3-btn"
           "ROLL!")
         (input 
@@ -26,7 +26,7 @@
           placeholder ,stat-name
           class "w3-grey"
           style "display: inline-block;float:right"
-          id ,(string-append stat-name "-val")
+          id ,stat-name 
           disabled)))))
 
 (define make-derived-stat-box
@@ -205,7 +205,12 @@
                   id "profile-btn"
                   class "w3-btn-block"
                   style "display:block"
-                  "Profile Information")
+                  "Profile Overview")
+                (button
+                  id "stats-btn"
+                  class "w3-btn-block"
+                  style "display:block"
+                  "Stats Overview")
                 (button
                   id "skills-btn"
                   class "w3-btn-block"
@@ -217,7 +222,11 @@
                 id "profile-info"
                 (div
                   id "profile-panel"
-                  style "display:inline-block;text-align:center;vertical-align:top")
+                  style "display:inline-block;vertical-align:top")
+               )
+               (div 
+                 id "stats-overview"
+                 style "display:none;width:85%;margin-top:1%"
                 (div 
                   id "stats-panel"
                   style "display:inline-block;"
@@ -230,7 +239,6 @@
                   id "stats-container" 
                   style "text-align:center;display:inline-block"
                  )
-              
                )
                (div
                   id "skills-overview"
@@ -256,6 +264,26 @@
 			(render "#profile-panel" (profile-elem (car ls)) 'append)
 			(loop (cdr ls))
 		)))
+
+(render "#profile-panel" 
+        (element-new
+          '(div
+            (button
+              id "save-character"
+              class "w3-btn"
+              style "width:100%"
+              "Save Character")
+             (button
+              id "get-character-sheet"
+              class "w3-btn"
+              style "width:100%"
+              "Character Sheet")
+             (button
+              id "get-codes"
+              class "w3-btn"
+              style "width:100%"
+              "Get Codes"))) 
+        'append)
 
 (render "#skill-pt-panel"
         (element-new
@@ -325,10 +353,20 @@
 	(if (null? ls)
 	    '()
 	    (begin
-	    (render "#skills-panel" 
-	            (skill-box (car (car ls)) (cadr (car ls)))
-	            'append)
-	    (loop (cdr ls))
+	      (render "#skills-panel" 
+	              (skill-box (car (car ls)) (cadr (car ls)))
+	              'append)
+	      (-> ($ (string-append "#" (sanitize-name (car (car ls))) "-add")) 
+	          'click
+	          (js-closure 
+	            (lambda ()
+	              (skill-point-callback (car (car ls)) 'add))))
+	      (-> ($ (string-append "#" (sanitize-name (car (car ls))) "-subtract")) 
+	          'click
+	          (js-closure 
+	            (lambda ()
+	              (skill-point-callback (car (car ls)) 'subtract))))
+	      (loop (cdr ls))
 	    )))
 
 (render "#weapon-skills-panel" 
