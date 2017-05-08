@@ -199,7 +199,8 @@
                     (textarea 
                       id "charsheet"
                       class "w3-grey"
-                      placeholder "Character Info goes here when you click 'Character Sheet'.")
+                      placeholder "Character Info goes here when you click 'Character Sheet'.
+                      Or get the codes for your character by clicking on 'Get Codes'.")
                     (div
                       (button
                         id "Clear"
@@ -370,7 +371,48 @@
         (weapon-skill-box "Grapple" 25 "1d4+db") 
         'append)
 
-(define popup
-  (lambda ()
-    '()))
+(define add-skill-box
+  (element-new 
+    '(div
+      class "add-skill-box"
+      (p "Add Skill")
+      (div
+        (p "Skill Name: ")
+        (input 
+          type "text"
+          class "w3-grey"
+          id "new-skill-name"
+          placeholder "Name"))
+      (div 
+        (p "Skill Base: ")
+        (input
+          type "text"
+          class "w3-grey"
+          id "new-skill-base"
+          placeholder "Base %"))
+      (div 
+        (p "Weapon Skill?: ")
+        (input
+          class "w3-grey"
+          type "checkbox"
+          name "Weapon"
+          id "is-weapon-skill"))
+      (div 
+        (p "Weapon Damage: ")
+        (input 
+          type "text"
+          class "w3-grey"
+          id "new-weapon-dmg"
+          placeholder "Damage"))
+      (div 
+        (button
+          class "w3-btn add-new-skill"
+          "OK")
+        (button
+          class "w3-btn cancel-add-skill"
+          "Cancel"))
+      )))
+
+
+
 

@@ -51,7 +51,8 @@
 }
 
 #stats-container {
-  text-align:center;display:inline-block
+  text-align:center;
+  display:inline-block
 }
 
 #skills-overview {
@@ -167,13 +168,24 @@
   display:inline-block
 }
 
-.popup {
-  position:absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.add-skill-box {
+  width: 50%;
+  vertical-align:top;
 }
+
+.add-skill-box > div > p {
+  display:inline-block;
+  text-align: left;
+  vertical-align:top;
+}
+
+.add-skill-box > div > input {
+  float:right;
+  vertical-align:top;
+}
+
+
+
 
 
 
