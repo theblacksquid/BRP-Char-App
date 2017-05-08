@@ -13,19 +13,16 @@
   (lambda (stat-name)
     (element-new 
       `(div
-        class "w3-container w3-row"
-        style "padding: 0.35em 16px;text-align:left;"
+        class "w3-container w3-row stat-roller"
         ,(string-append stat-name ":  ")
         (button
           id ,(string-append stat-name "-btn")
-          style "display:inline-block;float:right"
           class "w3-btn"
           "ROLL!")
         (input 
           type "text"
           placeholder ,stat-name
           class "w3-grey"
-          style "display: inline-block;float:right"
           id ,stat-name 
           disabled)))))
 
@@ -33,14 +30,12 @@
   (lambda (stat-name)
     (element-new
       `(div
-        class "w3-container"
-        style "padding: 0.35em 16px;text-align:left"
+        class "w3-container derived-stat-box"
         ,(string-append stat-name ":  ")
         (input
           type "text"
           id ,(sanitize-name stat-name)
           class "w3-grey"
-          style "float:right"
           placeholder ,stat-name
           disabled)))))
 
@@ -53,8 +48,7 @@
 		 (element-new
 			`(textarea
 				id ,elem-name
-				class "w3-grey"
-				style "padding: 0.35em 16px;display:block;width:100%"
+				class "w3-grey profile-elem"
 				placeholder ,elem-name)))
 		((or (eqv? elem-name "Handedness")
 		     (eqv? elem-name "Gender"))
@@ -65,8 +59,7 @@
 			(element-new 
 				`(select
 					id ,elem-name
-					class "w3-grey"
-					style "padding: 0.35em 16px;display:block;width:100%"
+					class "w3-grey profile-elem"
 					(option
 						value ""
 						,(check elem-name "Gender" "Handedness"))
@@ -83,26 +76,21 @@
 		  (element-new
 			`(input
 				id ,elem-name
-				class "w3-grey"
-				style "padding: 0.60em 16px;display:block;width:100%"
+				class "w3-grey profile-elem"
 				placeholder ,elem-name))))))
 
 (define skill-box
   (lambda (skill-name skill-base)
     (element-new 
       `(div
-        class "w3-container"
+        class "w3-container skill-box"
         ;style "vertical-align:top"
         id ,(string-append skill-name "-div")
-	      (p
-		      ;class "w3-third"
-		      style "text-align:left;display:inline-block;width:30%"
-		      ,(string-append skill-name ":   "))
+	      (p ,(string-append skill-name ":   "))
         (input
 			    type "text"
 			    id ,(sanitize-name skill-name)
 			    class "w3-grey w3-center"
-			    style "width:30%;"
 			    value ,(if (pair? skill-base)
 			               (if (string? (cadr skill-base))
 			                   (string-append (car skill-base)
@@ -114,15 +102,12 @@
 			               skill-base)
 			    disabled)
         (div
-          style "display: inline-block;width:30%"
           (button
             class "w3-btn"
-            style "display: inline-block;"
             id ,(string-append (sanitize-name skill-name) "-add")
             "+")
           (button
             class "w3-btn"
-            style "display: inline-block;"
             id ,(string-append (sanitize-name skill-name) "-subtract")
             "-"
             )
@@ -133,16 +118,13 @@
   (lambda (skill-name skill-base dmg-val)
     (element-new 
       `(div
-        class "w3-container"
+        class "w3-container weapon-skill-box"
         id ,(string-append skill-name "-div")
-        (p 
-          style "width:25%;display:inline-block;text-align:left"
-          ,skill-name)
+        (p ,skill-name)
         (input
           id ,(sanitize-name skill-name) 
 	        type "text"
 	        class "w3-grey w3-center"
-	        style ";width:25%"
 	        value ,(if (pair? skill-base)
 	                   (if (string? (cadr skill-base))
 	                       (string-append (car skill-base)
@@ -154,24 +136,18 @@
 	                   skill-base)
 	        disabled)
         (div
-	        style "display: inline-block;width:25%"
-	        ;style "float: left;"
+          class "weapon-skill-box-panel"
 	        (button
 		        class "w3-btn"
-		        style "display: inline-block;"
 		        id ,(string-append (sanitize-name skill-name) "-add")
 		        "+")
 	        (button
 		        class "w3-btn"
-		        style "display: inline-block;"
 		        id ,(string-append (sanitize-name skill-name) "-subtract")
 		        "-"
 		        )
         )
-        (p 
-	        ;class "w3-third"
-		      style "display: inline-block;width:25"
-	        ,dmg-val)
+        (p ,dmg-val)
         ))))
 
 (element-remove! ($ "#gear"))
@@ -200,77 +176,63 @@
               id "character-panel"
               style "display:block"
               (div
-                style "display:inline-block;width:15%;vertical-align:top;margin-top:1%;"
+                id "char-navbar"
                 (button
                   id "profile-btn"
                   class "w3-btn-block"
-                  style "display:block"
                   "Profile Overview")
                 (button
                   id "stats-btn"
                   class "w3-btn-block"
-                  style "display:block"
                   "Stats Overview")
                 (button
                   id "skills-btn"
                   class "w3-btn-block"
-                  style "display:block"
                   "Skills Overview"))
               (div
-                style "display:inline-block;width:85%;margin-top:1%"
                 class "w3-container"
                 id "profile-info"
                 (div
-                  id "profile-panel"
-                  style "display:inline-block;vertical-align:top")
+                  id "profile-panel")
                   (div
-                    style "margin-left:1%;overflow:auto;height:500px;width:35%;display:inline-block"
+                    id "char-results"
                     (textarea 
                       id "charsheet"
                       class "w3-grey"
-                      placeholder "Character Info goes here when you click 'Character Sheet'."
-                      style "display:inline-block;width:100%;height:90%")
+                      placeholder "Character Info goes here when you click 'Character Sheet'.")
                     (div
                       (button
                         id "Clear"
                         class "w3-btn"
-                        style "display:inline-block;width:50%"
                         "Clear") 
                       (button
                         id "Print"
                         class "w3-btn"
-                        style "display:inline-block;width:50%"
                         "Print"))
                   )
                )
                (div 
                  id "stats-overview"
-                 style "display:none;width:85%;margin-top:1%"
                 (div 
                   id "stats-panel"
-                  style "display:inline-block;"
                   )
                 (div 
                   id "derived-stats-panel"
-                  style "display:inline-block;"
                   )
                 (div
                   id "stats-container" 
-                  style "text-align:center;display:inline-block"
                  )
                )
                (div
                   id "skills-overview"
                   class "w3-container"
-                  style "display:none"
+                  style ""
                   (div 
                     id "skill-pt-panel")
                   (div 
-                    id "skills-panel"
-                    style "text-align:center;display:inline-block;overflow:auto;height:500px")
+                    id "skills-panel")
                   (div
-                    id "weapon-skills-panel"
-                    style "text-align:center;display:inline-block;vertical-align:top")
+                    id "weapon-skills-panel")
                )
              )) 
            )
@@ -287,20 +249,18 @@
 (render "#profile-panel" 
         (element-new
           '(div
+              id "profile-btn-panel"
             (button
               id "save-character"
               class "w3-btn"
-              style "width:100%"
               "Save Character")
              (button
               id "get-character-sheet"
               class "w3-btn"
-              style "width:100%"
               "Character Sheet")
              (button
               id "get-codes"
               class "w3-btn"
-              style "width:100%"
               "Get Codes"))) 
         'append)
 
@@ -308,14 +268,12 @@
         (element-new
           '(div
             class "w3-container"
-            style ";vertical-align:top;display:block"
             (p
-              style "text-align:left;display:inline-block"
+              id "skill-pt-label"
             "Total Skill Points:  ")
              (input 
                 type "text"
                 id "skillpoints"
-                style "width:30%;margin:auto;display:inline-block"
                 class "w3-center w3-grey"
                 value "000"
                 disabled)))
@@ -324,17 +282,18 @@
 (render "#skill-pt-panel"
         (element-new
           '(div
+            id "skill-pt-btns"
             class "w3-container"
-            style "display:block"
+            ;style "display:block"
             (button
               id "add-skill-btn"
               class "w3-btn"
-              style "display:inline-block"
+              ;style "display:inline-block"
               "Add Skill")
             (button
               id "reset-skills-btn"
               class "w3-btn"
-              style "display:inline-block"
+              ;style "display:inline-block"
               "Reset Skills")))
         'append)
 

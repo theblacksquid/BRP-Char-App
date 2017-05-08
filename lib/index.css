@@ -1,0 +1,173 @@
+#char-navbar {
+  display:inline-block;
+  width:15%;
+  vertical-align:top;
+  margin-top:1%;
+}
+
+#char-navbar > button {
+  display:block
+}
+
+#profile-info {
+  display:inline-block;
+  width:85%;
+  margin-top:1%
+}
+
+#profile-panel {
+  display:inline-block;
+  vertical-align:top
+}
+
+#char-results {
+  margin-left:1%;
+  overflow:auto;
+  height:500px;
+  width:35%;
+  display:inline-block
+}
+
+#charsheet {
+  display:inline-block;
+  width:100%;
+  height:90%
+}
+
+#char-results button {
+  display:inline-block;
+  width:50%
+}
+
+#stats-overview {
+  display:none;
+  width:85%;
+  margin-top:1%
+}
+
+#stats-overview > div {
+  display:inline-block;
+}
+
+#stats-container {
+  text-align:center;display:inline-block
+}
+
+#skills-overview {
+  display:none
+}
+
+#skills-panel {
+  text-align:center;
+  display:inline-block;
+  overflow:auto;
+  height:500px
+}
+
+#weapon-skills-panel {
+  text-align:center;
+  display:inline-block;
+  vertical-align:top
+}
+
+#profile-btn-panel > button {
+  width:100%
+}
+
+#skill-pt-panel > div {
+  vertical-align:top;
+  display:block
+}
+
+#skill-pt-label {
+  text-align:left;
+  display:inline-block
+}
+
+#skillpoints {
+  width:30%;
+  margin:auto;
+  display:inline-block
+}
+
+#skill-pt-btns {
+  display:block
+}
+
+#skill-pt-btns > button {
+  display:inline-block;
+}
+
+.stat-roller {
+  padding: 0.35em 16px;
+  text-align:left;
+}
+
+.stat-roller > button {
+  display:inline-block;
+  float:right
+}
+
+.stat-roller > input {
+  display:inline-block;
+  float:right
+}
+
+.derived-stat-box {
+  padding: 0.35em 16px;
+  text-align:left
+}
+
+.derived-stat-box > input {
+  float:right;
+}
+
+.profile-elem {
+  padding: 0.35em 16px;
+  display:block;
+  width:100%
+}
+
+.skill-box > p {
+  text-align:left;
+  display:inline-block;
+  width:30%
+}
+
+.skill-box > input {
+  width:30%;
+}
+
+.skill-box > div {
+  display: inline-block;
+  width:30%
+}
+
+.skill-box > div > button {
+  display:inline-block
+}
+
+.weapon-skill-box > p {
+  width:25%;
+  display:inline-block;
+  text-align:left
+}
+
+.weapon-skill-box > input {
+  width:25%
+}
+
+.weapon-skill-box-panel {
+  display: inline-block;
+  width:25%
+}
+
+.weapon-skill-box-panel > button {
+  display:inline-block
+}
+
+
+
+
+
+
