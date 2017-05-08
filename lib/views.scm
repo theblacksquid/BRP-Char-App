@@ -367,9 +367,30 @@
         (weapon-skill-box "Brawl" 25 "1d4+db") 
         'append)
 
+(-> ($ "#Brawl-add") 'click
+  (js-closure
+    (lambda ()
+      (skill-point-callback "Brawl" 'add))))
+      
+(-> ($ "#Brawl-subtract") 'click
+  (js-closure
+    (lambda ()
+      (skill-point-callback "Brawl" 'subtract))))
+
 (render "#weapon-skills-panel" 
         (weapon-skill-box "Grapple" 25 "1d4+db") 
         'append)
+
+(-> ($ "#Grapple-add") 'click
+  (js-closure
+    (lambda ()
+      (skill-point-callback "Grapple" 'add))))
+
+(-> ($ "#Grapple-subtract") 'click
+  (js-closure
+    (lambda ()
+      (skill-point-callback "Grapple" 'subtract))))
+
 
 (define add-skill-box
   (element-new 
