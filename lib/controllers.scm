@@ -71,10 +71,6 @@
         ((null? ls) '())
         ((pair? (assoc-ref (car (car ls)) ls)) 
          (begin
-           (console-log (car (car ls)))
-           (console-log (cadr (assoc-ref (car (car ls)) ls)))
-           (console-log (string-append "#" (sanitize-name (car (car ls)))))
-           (console-log "----")
            (-> ($ (string-append "#" (sanitize-name (car (car ls))))) 'val 
              (if (string? (cadr (assoc-ref (car (car ls)) ls)))
                  (+ (string->number (assoc-ref (car (assoc-ref (car (car ls)) ls)) ht))
@@ -239,19 +235,51 @@
     `(("Profile" ,(get-profile-info)) 
       ("Stats" ,(get-stats-info)) 
       ("Derived Stats" ,(get-derived-stats-info))
-      ("Skills" ,(get-skills-info)
-      ("Weapon Skills" ,(get-weapon-skills-info))))))
+      ("Skills" ,(get-skills-info))
+      ("Weapon Skills" ,(get-weapon-skills-info)))))
 
+(define format-info
+  (lambda ()
+    (element-new 
+      `(div 
+         class "charsheet"
+         (h1 
+          "BRP Character Sheet")
+         (div 
+          (h3 "Profile:")
+          ,(create-list-elem profile-items))
+         (div 
+           (h3 "Stats:")
+           ,(create-list-elem stats))
+         (div
+          (h3 "Derived Stats:")
+          ,(create-list-elem derived-stats)
+         (div 
+          (h3 "Skills:")
+          ,(create-list-elem (get-skill-names)))
+         (div 
+          (h3 "Weapon Skills:")
+          ,(create-list-elem (get-wpskill-names)))
+         )))))
 
+(-> ($ "#get-character-sheet") 'click
+  (js-closure 
+    (lambda ()
+      (-> ($ "#charsheet") 'val (to-text (collate-info))))))
 
 (-> ($ "#save-character") 'click
   (js-closure 
     (lambda ()
-      (console-log (format-info (collate-info))))))
+      '())))
 
-
-
+(-> ($ "#Clear") 'click
+  (js-closure 
+    (lambda ()
+      (-> ($ "#charsheet") 'val ""))))
+   
    
 
-   
-   
+
+
+
+

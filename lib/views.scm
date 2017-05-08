@@ -223,6 +223,25 @@
                 (div
                   id "profile-panel"
                   style "display:inline-block;vertical-align:top")
+                  (div
+                    style "margin-left:1%;overflow:auto;height:500px;width:35%;display:inline-block"
+                    (textarea 
+                      id "charsheet"
+                      class "w3-grey"
+                      placeholder "Character Info goes here when you click 'Character Sheet'."
+                      style "display:inline-block;width:100%;height:90%")
+                    (div
+                      (button
+                        id "Clear"
+                        class "w3-btn"
+                        style "display:inline-block;width:50%"
+                        "Clear") 
+                      (button
+                        id "Print"
+                        class "w3-btn"
+                        style "display:inline-block;width:50%"
+                        "Print"))
+                  )
                )
                (div 
                  id "stats-overview"
@@ -369,6 +388,21 @@
 	      (loop (cdr ls))
 	    )))
 
+(define create-list-elem
+  (lambda (ls)
+    (string-append 
+      "<ul>"
+      (let loop ((lst ls))
+        (if (null? lst)
+            ""
+            (string-append "<li>"
+                           (car lst) ": "
+                           (-> ($ (string-append "#" (sanitize-name (car lst))))
+                               'val)
+                           "</li>"
+                           (loop (cdr lst)))))
+      "</ul>")))
+
 (render "#weapon-skills-panel" 
         (weapon-skill-box "Brawl" 25 "1d4+db") 
         'append)
@@ -376,3 +410,8 @@
 (render "#weapon-skills-panel" 
         (weapon-skill-box "Grapple" 25 "1d4+db") 
         'append)
+
+(define popup
+  (lambda ()
+    '()))
+

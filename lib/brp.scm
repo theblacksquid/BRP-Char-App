@@ -32,6 +32,22 @@
   '(("Brawl" (25 "1d4+db"))
     ("Grapple" (25 "1d4+db"))))
 
+(define get-skill-names
+  (lambda ()
+    (let loop ((ls skill-list))
+      (if (null? ls)
+          '()
+          (cons (caar ls)
+                (loop (cdr ls)))))))
+
+(define get-wpskill-names
+  (lambda ()
+    (let loop ((ls weapon-skill-list))
+      (if (null? ls)
+          '()
+          (cons (caar ls)
+                (loop (cdr ls)))))))
+
 (define roll-stat
   ; stat-name should be a string
   ; dice-vals is a list of three numbers, see 'dice'
@@ -103,27 +119,73 @@
                                5))
                       prod)))))))
 
-(define e-new element-new)
-
-(define format-info
+(define to-text
   (lambda (alist)
-    (element-new 
-      `(div 
-         class "charsheet"
-         (h1 
-          "BRP Character Sheet")
-         (div 
-          (h3 "Profile:")
-          ,(let loop ((ls profile-items))
-            (if (null? ls)
-                '()
-                (list `(p ,(car ls) 
-                          ,(assoc-ref (car ls) 
-                                      (assoc-ref "Profile" alist)))
-                      (loop (cdr ls))))))
-;         ()
-;         ()
-;         ()
-;         ()
-         ))))
+    (let ((prof (assoc-ref "Profile" alist))
+          (sts (assoc-ref "Stats" alist))
+          (drv-sts (assoc-ref "Derived Stats" alist))
+          (skls (assoc-ref "Skills" alist))
+          (wp-skls (assoc-ref "Weapon Skills" alist))
+          )
+      (string-append
+          "BRP_CHARACTER_SHEET \n"
+          "__________ \n"
+          (string-append
+            "__________ \n"
+            "Profile \n"
+            "__________ \n"
+            (let loop ((ls profile-items))
+              (if (null? ls)
+                  ""
+                  (string-append (car ls) ": " 
+                                 (assoc-ref (car ls) prof) "\n"
+                                 (loop (cdr ls))))))
+          "\n"
+          (string-append 
+            "__________ \n"
+            "Stats \n"
+            "__________ \n"
+            (let loop ((ls stats))
+              (if (null? ls)
+                  ""
+                  (string-append (car ls) ": "
+                                 (assoc-ref (car ls) sts) "\n"
+                                 (loop (cdr ls))))))
+          "\n"
+          (string-append 
+            "__________ \n"
+            "Derived Stats \n"
+            "__________ \n"
+            (let loop ((ls derived-stats))
+              (if (null? ls)
+                  ""
+                  (string-append (car ls) ": "
+                                 (assoc-ref (sanitize-name (car ls)) 
+                                            drv-sts) "\n"
+                                 (loop (cdr ls))))))
+          "\n"
+          (string-append 
+            "__________ \n"
+            "Skills \n"
+            "__________ \n"
+            (let loop ((ls (get-skill-names)))
+              (if (null? ls)
+                  ""
+                  (string-append (car ls) ": "
+                                 (assoc-ref (sanitize-name (car ls)) 
+                                            skls) "\n"
+                                 (loop (cdr ls))))))
+          "\n"
+          (string-append 
+            "__________ \n"
+            "Weapon Skills \n"
+            "__________ \n"
+            (let loop ((ls (get-wpskill-names)))
+              (if (null? ls)
+                  ""
+                  (string-append (car ls) ": "
+                                 (assoc-ref (sanitize-name (car ls)) 
+                                            wp-skls) "\n"
+                                 (loop (cdr ls))))))
+          ))))
 
