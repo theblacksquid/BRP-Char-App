@@ -277,9 +277,38 @@
     (lambda ()
       (-> ($ "#charsheet") 'val ""))))
    
-   
+(define reset-skillpoints
+  (lambda ()
+    (begin
+      (update-skillpoints)
+      (let loop ((ls (get-skill-names)))
+        (if (null? ls)
+            '()
+            (begin 
+              (-> ($ (string-append "#" (sanitize-name (car ls)))) 
+                  'val 
+                  (cond 
+                    ((and (pair? (assoc-ref (car ls) skill-list))
+                          (number? (cadr (assoc-ref (car ls) skill-list)))) 
+                     (string-append 
+                      (car (assoc-ref (car ls) skill-list))
+                      "*"
+                      (number->string (cadr (assoc-ref (car ls) skill-list)))))
+                    ((and (pair? (assoc-ref (car ls) skill-list))
+                          (string? (cadr (assoc-ref (car ls) skill-list)))) 
+                     (string-append 
+                      (car (assoc-ref (car ls) skill-list))
+                      "+"
+                      (cadr (assoc-ref (car ls) skill-list))))
+                    (else 
+                      (assoc-ref (car ls) skill-list))))
+              (loop (cdr ls)))))
+      (update-skills))))
 
-
+(-> ($ "#reset-skills-btn") 'click
+  (js-closure 
+    (lambda ()
+      (reset-skillpoints))))
 
 
 

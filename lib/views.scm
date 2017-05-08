@@ -294,7 +294,7 @@
               id "reset-skills-btn"
               class "w3-btn"
               ;style "display:inline-block"
-              "Reset Skills")))
+              "Reset Skill Points")))
         'append)
 
 (let loop ((ls stats))
