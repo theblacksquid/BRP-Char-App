@@ -115,16 +115,26 @@
 (define skill-point-callback
   (lambda (skill-name mode)
     (let ((name (string-append "#" (sanitize-name skill-name))))
-      (if (zero? (string->number (-> ($ "#skillpoints") 'val)))
-          '()
-          (begin
-            (-> ($ name) 'val ((if (eqv? mode 'add) + -) 
-                               (string->number (-> ($ name) 'val))
-                               1))
-            (-> ($ "#skillpoints") 'val ((if (eqv? mode 'add) - +)
-                                         (string->number (-> ($ "#skillpoints") 'val))
-                                         1))
-          )))))
+      (cond
+        ((and (zero? (string->number (-> ($ "#skillpoints") 'val)))
+              (eqv? mode 'subtract)) 
+         (-> ($ name) 'val
+           (- (string->number (-> ($ name) 'val)) 
+              1))
+         (-> ($ "#skillpoints") 'val
+           (+ (string->number (-> ($ "#skillpoints") 'val)) 
+              1)))
+        ((and (zero? (string->number (-> ($ "#skillpoints") 'val)))
+              (eqv? mode 'add)) 
+         '())
+        (else 
+         (-> ($ name) 'val
+           ((if (eqv? mode 'add) + -) (string->number (-> ($ name) 'val)) 
+              1))
+         (-> ($ "#skillpoints") 'val
+           ((if (eqv? mode 'add) - +) (string->number (-> ($ "#skillpoints") 'val)) 
+              1)))
+      ))))
 
 (-> ($ "#randomize")
     'click
