@@ -6,7 +6,6 @@
   (lambda (char)
     (list->string (cons char '()))))
 
-
 (define char-upcase
   (lambda (char)
     (let ((int (char->integer char)))
