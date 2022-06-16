@@ -135,24 +135,6 @@
            ((if (eqv? mode 'add) - +) (string->number (-> ($ "#skillpoints") 'val)) 
               1)))
       ))))
-
-(-> ($ "#randomize")
-    'click
-    (js-closure
-      (lambda ()
-        (randomize-callback))))
-    
-(let loop ((ls stats))
-  (if (null? ls)
-      '()
-      (begin
-        (-> ($ (string-append "#" (car ls) "-btn"))
-            'click
-           (js-closure
-             (lambda ()
-               (stat-roll-callback (car ls)))))
-        (loop (cdr ls))
-      )))    
     
 (define nav-btn-callback
   (lambda (to-show to-hide)
@@ -171,22 +153,6 @@
           (-> ($ (string-append "#" to-show)) 'css "display" "inline-block")
           (-> ($ (string-append "#" to-hide)) 'css "display" "none")
         ))))    
-
-(-> ($ "#profile-btn") 'click
-  (js-closure
-    (lambda ()
-      (nav-btn-callback "profile-info" '("skills-overview" "stats-overview")))))    
-    
-    
-(-> ($ "#skills-btn") 'click
-  (js-closure
-    (lambda ()
-      (nav-btn-callback "skills-overview" '("profile-info" "stats-overview")))))    
-    
-(-> ($ "#stats-btn") 'click
-  (js-closure
-    (lambda ()
-      (nav-btn-callback "stats-overview" '("profile-info" "skills-overview")))))
    
 (define get-profile-info
   (lambda ()
@@ -271,21 +237,6 @@
           (h3 "Weapon Skills:")
           ,(create-list-elem (get-wpskill-names)))
          )))))
-
-(-> ($ "#get-character-sheet") 'click
-  (js-closure 
-    (lambda ()
-      (-> ($ "#charsheet") 'val (to-text (collate-info))))))
-
-(-> ($ "#save-character") 'click
-  (js-closure 
-    (lambda ()
-      '())))
-
-(-> ($ "#Clear") 'click
-  (js-closure 
-    (lambda ()
-      (-> ($ "#charsheet") 'val ""))))
    
 (define reset-skillpoints
   (lambda ()
@@ -314,67 +265,6 @@
                       (assoc-ref (car ls) skill-list))))
               (loop (cdr ls)))))
       (update-skills))))
-
-(-> ($ "#reset-skills-btn") 'click
-  (js-closure 
-    (lambda ()
-      (reset-skillpoints))))
-
-(-> ($ "#add-skill-btn") 'click
-  (js-closure
-    (lambda ()
-      (render "#skill-pt-panel" add-skill-box 'append)
-      (-> ($ ".cancel-add-skill") 'click
-       (js-closure
-         (lambda ()
-           (element-remove! ($ ".add-skill-box")))))
-      (-> ($ ".add-new-skill") 'click
-        (js-closure 
-          (lambda ()
-            (begin
-              (if (eqv? (-> ($ "#is-weapon-skill") 'prop "checked") #f)
-                (begin 
-                  (render "#skills-panel" 
-                          (skill-box (-> ($ "#new-skill-name") 'val) 
-                                     (-> ($ "#new-skill-base") 'val)) 
-                          'append)
-                  (set! skill-list (cons (list (-> ($ "#new-skill-name") 'val) 
-                                               (string->number (-> ($ "#new-skill-base") 
-                                                                   'val)))
-                                         skill-list))
-                )
-                (begin
-                  (render "#weapon-skills-panel" 
-                          (weapon-skill-box (-> ($ "#new-skill-name") 'val) 
-                                            (-> ($ "#new-skill-base") 'val) 
-                                            (-> ($ "#new-weapon-dmg") 'val))
-                          'append)
-                  (set! weapon-skill-list 
-                        (cons (list (-> ($ "#new-skill-name") 'val)
-                                    (-> ($ "#new-skill-base") 'val)
-                                    (-> ($ "#new-weapon-dmg") 'val))
-                              weapon-skill-list))))
-              (let ((name (-> ($ "#new-skill-name") 'val)))
-                (-> ($ (string-append "#" (sanitize-name name) "-add")) 
-                    'click
-                    (js-closure 
-                      (lambda ()
-                        (skill-point-callback name 'add))))
-                (-> ($ (string-append "#" (sanitize-name name) "-subtract")) 
-                    'click
-                    (js-closure 
-                      (lambda ()
-                        (skill-point-callback name 'subtract)))))
-              (element-remove! ($ ".add-skill-box"))
-            )
-          )))
-      )))
-
-(-> ($ "#get-codes") 'click
-  (js-closure
-    (lambda ()
-      (-> ($ "#charsheet") 'val (collate-info)))))
-
 
 
 
