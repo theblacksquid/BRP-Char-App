@@ -22,7 +22,7 @@
 
 #char-results {
   margin-left:1%;
-  overflow:auto;
+  /* overflow:auto; */
   height:500px;
   width:35%;
   display:inline-block

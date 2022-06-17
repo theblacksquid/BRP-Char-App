@@ -7,9 +7,9 @@
 
 (element-remove! ($ "#gear"))
 
-(render "#app"
-        (element-new app-template)
-        'html)
+;; (render "#app"
+;;         (element-new app-template)
+;;         'html)
 
 (let loop ((ls profile-items))
 	(if (null? ls)

@@ -10,14 +10,90 @@
 </head>
 
 <body class="w3-dark-grey">
-  <img id="gear" class="w3-middle w3-spin" src="lib/Gear.png" style="position:absolute;margin:auto;top:0;bottom:0;right:0;left:0"></img>
-	<div id='app' class="w3-dark-grey w3-display-container" style="width:95%;margin:auto;">
+  <!-- <img id="gear" class="w3-middle w3-spin" src="lib/Gear.png" style="position:absolute;margin:auto;top:0;bottom:0;right:0;left:0"></img> -->
+  <div id='app' class="w3-dark-grey w3-display-container" style="width:95%;margin:auto;">
+    <div style="margin:auto;">
+      <div id="main-navbar"
+	   style="display:block">
+	<h1>BRP Character Generator</h1>
+	<button id="character-panel-btn"
+		class="w3-btn">
+	  Character Profile
+	</button>
+	<button id="character-list-btn"
+		class="w3-btn">
+	  Character List
+	</button>
+	<button id="settings-panel-btn"
+		class="w3-btn">
+	  Settings
+	</button>
+      </div>
+      
+      <div id="character-panel"
+	   style="display:block">
+	
+	<div id="char-navbar">
+	  <button id="profile-btn"
+		  class="w3-btn-block">
+	    Profile Overview
+	  </button>
+	  <button id="stats-btn"
+		  class="w3-btn-block">
+	    Stats Overview
+	  </button>
+	  <button id="skills-btn"
+		  class="w3-btn-block">
+	    Skills Overview
+	  </button>
 	</div>
-	<script src="lib/randInt.js"></script>
-	<script src="lib/localforage.min.js"></script>
-	<script type="text/javascript" src="lib/biwascheme.js">
-	(load "lib/index.scm")
-	</script>
+
+	<div id="profile-info"
+	     class="w3-container"
+	     style="display: block">
+	  <div id="profile-panel"></div>
+
+	  <div id="char-results"
+	       class="w3-container">
+	    <textarea id="charsheet"
+		      class="w3-grey"
+		      readonly="true">Character info goes here when you click 'Character sheet'. Or get the codes for your character by clicking on 'Get Codes'
+	    </textarea>
+	    <div>
+	      <button id="Clear"
+		      class="w3-btn"
+		      style="width:100%">
+		Clear
+	      </button>
+	      <button id="Print"
+		      class="w3-btn"
+		      style="width:100%">
+		Print
+	      </button>
+	    </div>
+	  </div>
+	</div>
+	
+	<div id="stats-overview">
+	  <div id="stats-panel"></div>
+	  <div id="derived-stats-panel"></div>
+	  <div id="stats-container"></div>
+	</div>
+	<div id="skills-overview"
+	     class="w3-container">
+	  <div id="skill-pt-panel"></div>
+	  <div id="skills-panel"></div>
+	  <div id="weapon-skills-panel"></div>
+	</div>
+      </div>
+    </div>
+    
+  </div>
+  <script src="lib/randInt.js"></script>
+  <script src="lib/localforage.min.js"></script>
+  <script type="text/javascript" src="lib/biwascheme.js">
+    (load "lib/index.scm")
+  </script>
 </body>
 
 </html>

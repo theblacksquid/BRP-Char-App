@@ -42,77 +42,77 @@
 ; make sure to research about drop-down menus
 (define profile-elem
   (lambda (elem-name)
-	(cond 
-		((or (eqv? elem-name "Description")
-		     (eqv? elem-name "Biography")) 
-		 (element-new
-			`(textarea
-				id ,elem-name
-				class "w3-grey profile-elem"
-				placeholder ,elem-name)))
-		((or (eqv? elem-name "Handedness")
-		     (eqv? elem-name "Gender"))
-		 (let ((check (lambda (val then els) 
-					(if (eqv? val "Gender")
-					    then
-					    els))))
-			(element-new 
-				`(select
-					id ,elem-name
-					class "w3-grey profile-elem"
-					(option
-						value ""
-						,(check elem-name "Gender" "Handedness"))
-					(option
-						value ,(check elem-name "Male" "Right")
-						,(check elem-name "Male" "Right"))
-					(option
-						value ,(check elem-name "Female" "Left")
-						,(check elem-name "Female" "Left"))
-					(option
-						value "Other"
-						"Other")))))
-		(else
-		  (element-new
-			`(input
-				id ,elem-name
-				class "w3-grey profile-elem"
-				placeholder ,elem-name))))))
+    (cond 
+     ((or (eqv? elem-name "Description")
+	  (eqv? elem-name "Biography")) 
+      (element-new
+       `(textarea
+	 id ,elem-name
+	 class "w3-grey profile-elem"
+	 placeholder ,elem-name)))
+     ((or (eqv? elem-name "Handedness")
+	  (eqv? elem-name "Gender"))
+      (let ((check (lambda (val then els) 
+		     (if (eqv? val "Gender")
+			 then
+			 els))))
+	(element-new 
+	 `(select
+	   id ,elem-name
+	   class "w3-grey profile-elem"
+	   (option
+	    value ""
+	    ,(check elem-name "Gender" "Handedness"))
+	   (option
+	    value ,(check elem-name "Male" "Right")
+	    ,(check elem-name "Male" "Right"))
+	   (option
+	    value ,(check elem-name "Female" "Left")
+	    ,(check elem-name "Female" "Left"))
+	   (option
+	    value "Other"
+	    "Other")))))
+     (else
+      (element-new
+       `(input
+	 id ,elem-name
+	 class "w3-grey profile-elem"
+	 placeholder ,elem-name))))))
 
 (define skill-box
   (lambda (skill-name skill-base)
     (element-new 
-      `(div
-        class "w3-container skill-box"
-        ;style "vertical-align:top"
-        id ,(string-append skill-name "-div")
-	      (p ,(string-append skill-name ":   "))
-        (input
-			    type "text"
-			    id ,(sanitize-name skill-name)
-			    class "w3-grey w3-center"
-			    value ,(if (pair? skill-base)
-			               (if (string? (cadr skill-base))
-			                   (string-append (car skill-base)
-			                                  "+"
-			                                  (cadr skill-base))
-			                   (string-append (car skill-base)
-			                                  "*"
-			                                  (number->string (cadr skill-base))))
-			               skill-base)
-			    disabled)
-        (div
-          (button
-            class "w3-btn"
-            id ,(string-append (sanitize-name skill-name) "-add")
-            "+")
-          (button
-            class "w3-btn"
-            id ,(string-append (sanitize-name skill-name) "-subtract")
-            "-"
-            )
+     `(div
+       class "w3-container skill-box"
+					;style "vertical-align:top"
+       id ,(string-append skill-name "-div")
+       (p ,(string-append skill-name ":   "))
+       (input
+	type "text"
+	id ,(sanitize-name skill-name)
+	class "w3-grey w3-center"
+	value ,(if (pair? skill-base)
+		   (if (string? (cadr skill-base))
+		       (string-append (car skill-base)
+			              "+"
+			              (cadr skill-base))
+		       (string-append (car skill-base)
+			              "*"
+			              (number->string (cadr skill-base))))
+		   skill-base)
+	disabled)
+       (div
+        (button
+         class "w3-btn"
+         id ,(string-append (sanitize-name skill-name) "-add")
+         "+")
+        (button
+         class "w3-btn"
+         id ,(string-append (sanitize-name skill-name) "-subtract")
+         "-"
+         )
         )
-        ))))
+       ))))
 
 (define weapon-skill-box
   (lambda (skill-name skill-base dmg-val)
